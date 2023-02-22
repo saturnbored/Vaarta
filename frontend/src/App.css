@@ -1,4 +1,10 @@
 .App {
-  text-align: center;
+  min-height: 100vh;
+  color: black;
+  font-family: 'Times New Roman', Times, serif;
+  display: flex;
+  background-image: url('./background_image.jpg');
+  background-size: cover;
+  background-position: center;
 }
 
