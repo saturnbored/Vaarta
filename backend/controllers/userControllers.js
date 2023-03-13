@@ -72,7 +72,7 @@ const allUsers = asyncHandler(async (req, res) => {
         ],
     } : {};
 
-    const users = await userModel.find(keyword).find({_id: {$ne: req.user._id}});
+    const users = await userModel.find(keyword).select('-password').find({_id: {$ne: req.user._id}});
     res.send(users);
 });
 

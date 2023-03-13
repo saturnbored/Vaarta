@@ -5,39 +5,43 @@ const userModel = require('../models/userModel');
 
 // controller for fetching a 1v1 chat
 const accessChat = asyncHandler(async (req, res) => {
-    const {userId} = req.body;
+    const { userId } = req.body;
 
-    if(!userId) {
+    if (!userId) {
         console.log('User id param not sent with request.');
         return res.status(400);
     }
-    
+
     try {
-        
+
         let chat = await chatModel.find({
             isGroupChat: false,
             $and: [
-                {users: {
-                    $elemMatch: {
-                        $eq: req.user._id
+                {
+                    users: {
+                        $elemMatch: {
+                            $eq: req.user._id
+                        }
                     }
-                }},
-                {users: {
-                    $elemMatch: {
-                        $eq: userId
+                },
+                {
+                    users: {
+                        $elemMatch: {
+                            $eq: userId
+                        }
                     }
-                }},
+                },
             ],
         })
-        .populate('users', '-password')
-        .populate('latestMessage');
+            .populate('users', '-password')
+            .populate('latestMessage');
 
         chat = await userModel.populate(chat, {
             path: 'latestMessage.sender',
             select: 'name pic email',
         });
 
-        if(chat.length === 0) {
+        if (chat.length === 0) {
             let chatData = {
                 chatName: 'sender',
                 isGroupChat: false,
@@ -45,11 +49,11 @@ const accessChat = asyncHandler(async (req, res) => {
             };
 
             const createdChat = await chatModel.create(chatData);
-            chat = chatModel.find({
+            chat = await chatModel.find({
                 _id: createdChat._id
-            }).populate('users', '-password');
+            })
+            .populate('users', '-password');
         }
-
         return res.status(200).json(chat[0]);
 
     } catch (error) {
@@ -63,12 +67,12 @@ const accessChat = asyncHandler(async (req, res) => {
 const fetchChats = asyncHandler(async (req, res) => {
     try {
         let allChats = await chatModel.find({
-            users: { $elemMatch: {$eq: req.user._id}}
+            users: { $elemMatch: { $eq: req.user._id } }
         })
-        .populate('users', '-password')
-        .populate('groupAdmin', '-password')
-        .populate('latestMessage')
-        .sort({ updatedAt: -1});
+            .populate('users', '-password')
+            .populate('groupAdmin', '-password')
+            .populate('latestMessage')
+            .sort({ updatedAt: -1 });
 
         allChats = await userModel.populate(allChats, {
             path: 'latestMessage.sender',
@@ -86,7 +90,7 @@ const fetchChats = asyncHandler(async (req, res) => {
 
 // controller for creating a group chat
 const createGroupChat = asyncHandler(async (req, res) => {
-    if(!req.body.users || !req.body.name) {
+    if (!req.body.users || !req.body.name) {
         return res.status(400).send({
             message: 'Please fill all the fields.',
         });
@@ -94,7 +98,7 @@ const createGroupChat = asyncHandler(async (req, res) => {
 
     let users = JSON.parse(req.body.users);
 
-    if( users.length < 2) { // a group chat should have minimum 3 participants
+    if (users.length < 2) { // a group chat should have minimum 3 participants
         return res.status(400).send({
             message: 'Please add more users.',
         });
@@ -112,9 +116,9 @@ const createGroupChat = asyncHandler(async (req, res) => {
 
         const createdChat = await chatModel.create(groupChatData);
 
-        const groupChat = await chatModel.findOne({_id: createdChat._id})
-        .populate('users', '-password')
-        .populate( 'groupAdmin', '-password');
+        const groupChat = await chatModel.findOne({ _id: createdChat._id })
+            .populate('users', '-password')
+            .populate('groupAdmin', '-password');
 
         return res.status(201).json(groupChat);
 
@@ -129,21 +133,21 @@ const createGroupChat = asyncHandler(async (req, res) => {
 const renameGroupChat = asyncHandler(async (req, res) => {
     const { chatId, chatName } = req.body;
 
-    if(!chatId || !chatName){
+    if (!chatId || !chatName) {
         return res.status(400).send('Bad request.');
     }
 
     try {
-        const updatedChat = await chatModel.findByIdAndUpdate(chatId,{
+        const updatedChat = await chatModel.findByIdAndUpdate(chatId, {
             chatName: chatName
         },
-        {
-            new: true,
-        })
-        .populate('users', '-password')
-        .populate('groupAdmin', '-password');
-        
-        if(!updatedChat) {
+            {
+                new: true,
+            })
+            .populate('users', '-password')
+            .populate('groupAdmin', '-password');
+
+        if (!updatedChat) {
             return res.status(404).send('Chat was not found');
         }
         return res.status(200).json(updatedChat);
@@ -156,27 +160,27 @@ const renameGroupChat = asyncHandler(async (req, res) => {
 
 // controller for removing user from a group chat
 const removeFromGroup = asyncHandler(async (req, res) => {
-    const {chatId, userId} = req.body;
-    
-    if(!userId || !chatId) {
+    const { chatId, userId } = req.body;
+
+    if (!userId || !chatId) {
         return res.status(400).send('Bad request.');
     }
 
     try {
         const updatedChat = await chatModel.findByIdAndUpdate(chatId, {
-            $pull: {users: userId},
+            $pull: { users: userId },
         }, {
-            new : true,
+            new: true,
         })
-        .populate('users', '-password')
-        .populate('groupAdmin', '-password');
+            .populate('users', '-password')
+            .populate('groupAdmin', '-password');
 
-        if(!updatedChat) {
+        if (!updatedChat) {
             res.status(404);
             throw new Error('Chat not found.');
         }
 
-        return res.status(200).json(updatedChat);        
+        return res.status(200).json(updatedChat);
     } catch (error) {
         console.log(error.message);
         res.status(400);
@@ -186,23 +190,23 @@ const removeFromGroup = asyncHandler(async (req, res) => {
 
 // controller for adding someone to a group chat
 const addToGroup = asyncHandler(async (req, res) => {
-    const {chatId, userId}  = req.body;
+    const { chatId, userId } = req.body;
 
-    if(!chatId || !userId) {
+    if (!chatId || !userId) {
         return res.status(400).send('Bad request');
     }
 
     try {
-        
+
         const updatedChat = await chatModel.findByIdAndUpdate(chatId, {
-            $push: {users: userId},
+            $push: { users: userId },
         }, {
             new: true,
         })
-        .populate('users', '-password')
-        .populate('groupAdmin', '-password');
+            .populate('users', '-password')
+            .populate('groupAdmin', '-password');
 
-        if(!updatedChat) {
+        if (!updatedChat) {
             res.status(404);
             throw new Error('Chat not found');
         }

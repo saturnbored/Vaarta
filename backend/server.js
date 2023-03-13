@@ -1,5 +1,4 @@
 const express = require('express');
-const {chats} = require('./data/data');
 const dotenv = require('dotenv');
 const userRoutes = require('./routes/userRoutes');
 const chatRoutes = require('./routes/chatRoutes');

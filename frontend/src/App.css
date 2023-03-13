@@ -4,7 +4,17 @@
   font-family: 'Times New Roman', Times, serif;
   display: flex;
   background-image: url('./background_image.jpg');
+  min-height: 100%;
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  /* padding-bottom: 0;
+  margin-bottom: 0; */
+}
+
+.search-drawer {
+  min-width: 22vw;
+  padding: 10px 10px;
 }
 

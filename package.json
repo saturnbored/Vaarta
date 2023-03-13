@@ -22,6 +22,7 @@
     "framer-motion": "^9.0.7",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.9.2",
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.20",
+    "react-modern-drawer": "^1.2.0"
   }
 }
