@@ -70,7 +70,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     }
   };
 
-  useEffect(() => console.log(messages), [messages]);
 
   const sendMessage = async (event) => {
     if (event.key === "Enter" && newMessage) {
