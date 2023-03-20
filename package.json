@@ -23,6 +23,7 @@
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^6.9.2",
     "nodemon": "^2.0.20",
-    "react-modern-drawer": "^1.2.0"
+    "react-modern-drawer": "^1.2.0",
+    "socket.io": "^4.6.1"
   }
 }

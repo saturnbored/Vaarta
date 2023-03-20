@@ -1,10 +1,14 @@
+body{
+  font-family: 'Roboto', sans-serif;
+}
+
 .App {
   min-height: 100vh;
   color: black;
-  font-family: 'Times New Roman', Times, serif;
+  font-family: 'Roboto', sans-serif;
   display: flex;
   background-image: url('./background_image.jpg');
-  min-height: 100%;
+  /* min-height: 100%; */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -16,5 +20,18 @@
 .search-drawer {
   min-width: 22vw;
   padding: 10px 10px;
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(136, 136, 136, 0.281);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 

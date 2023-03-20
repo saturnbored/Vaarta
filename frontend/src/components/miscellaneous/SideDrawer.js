@@ -160,7 +160,9 @@ function SideDrawer() {
         <Tooltip label="Search Users to chat" hasArrow placement="bottom-end">
           <Button onClick={() => {
             onOpen()
-          }} ref={btnRef}>
+          }} ref={btnRef}
+          colorScheme = "blackAlpha"
+          >
             <i className="fas fa-search"></i>
             <Text display={{ base: "none", md: "flex" }} px={4}>
               Search User
@@ -171,7 +173,7 @@ function SideDrawer() {
           Vaarta
         </Text>
         <div>
-          {/* <Menu>
+          <Menu>
             <MenuButton p={1}>
               <NotificationBadge
                 count={notification.length}
@@ -195,9 +197,9 @@ function SideDrawer() {
                 </MenuItem>
               ))}
             </MenuList>
-          </Menu> */}
+          </Menu>
           <Menu>
-            <MenuButton as={Button} bg="white" rightIcon={<ChevronDownIcon />}>
+            <MenuButton as={Button} colorScheme = "#F8F8F8" rightIcon={<ChevronDownIcon />}>
               <Avatar
                 size="sm"
                 cursor="pointer"
@@ -246,63 +248,6 @@ function SideDrawer() {
           </DrawerBody>
         </DrawerContent>
       </Drawer>
-      {/* <Button ref={btnRef} colorScheme='teal' onClick={onOpen}>
-        Open
-      </Button>
-      <Drawer
-        isOpen={isOpen}
-        placement='right'
-        onClose={onClose}
-        finalFocusRef={btnRef}
-      >
-        <DrawerOverlay />
-        <DrawerContent>
-          <DrawerCloseButton />
-          <DrawerHeader>Create your account</DrawerHeader>
-
-          <DrawerBody>
-            <Input placeholder='Type here...' />
-          </DrawerBody> */}
-
-      {/* <DrawerFooter>
-            <Button variant='outline' mr={3} onClick={onClose}>
-              Cancel
-            </Button>
-            <Button colorScheme='blue'>Save</Button>
-          </DrawerFooter> */}
-      {/* </DrawerContent>
-      </Drawer> */}
-
-      {/* <button onClick={onOpen}>Show</button> */}
-      {/* <Drawer
-        open={isOpen}
-        // onClose={toggleDrawer}
-        onClose={onClose}
-        direction='left'
-        className='search-drawer'
-      >
-        <Box display="flex" >
-          <Input
-            placeholder="Search by name or email"
-            mr={2}
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          <Button onClick={handleSearch}>Go</Button>
-        </Box>
-        {loading ? (
-          <ChatLoading />
-        ) : (
-          searchResult?.map((u) => (
-            <UserListItem
-              key={u._id}
-              user={u}
-              handleFunction={() => accessChat(u._id)}
-            />
-          ))
-        )}
-        {loadingChat && <Spinner ml="auto" d="flex" />}
-      </Drawer> */}
     </>
   );
 }
